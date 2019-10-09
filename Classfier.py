@@ -1,9 +1,11 @@
 from read_data import *
+from math import log
 
 if __name__ == '__main__':
-    spam_words, spam_word_counts = read_data("./train/spam/")
-    ham_words, ham_word_counts = read_data("./train/ham/")
-
+    spams,spam_words, spam_word_counts = read_data("./train/spam/")
+    hams, ham_words, ham_word_counts = read_data("./train/ham/")
+    spam_prior = spams/(spams+hams)
+    ham_prior = hams/(spams+hams)
     all_words = get_allwords()
     all_words = remove_stopwords(all_words)
     spam_word_counts = laplace_smoothening(all_words, spam_word_counts, 1)
@@ -44,14 +46,15 @@ if __name__ == '__main__':
         y.append(0)
 
     # print(X[10])
+    print(spam_prior)
     pred = []
     for i in X:
-        sp = 0.5
-        hp = 0.5
+        sp = log(spam_prior)
+        hp = log(ham_prior)
         for j in i:
             try:
-                sp *= spam_word_prob[j]
-                hp *= ham_word_prob[j]
+                sp += log(spam_word_prob[j])
+                hp += log(ham_word_prob[j])
             except:
                 print(j)
         if sp > hp:

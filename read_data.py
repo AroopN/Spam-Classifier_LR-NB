@@ -52,7 +52,7 @@ def read_data(mypath):
     # mypath="./train/spam/"
     f = fnames(mypath)
     data=""
-    
+    prior=len(f)
     # import codecs
     for i in f:
         fin = codecs.open(mypath+i, 'r', encoding='utf-8',
@@ -62,7 +62,7 @@ def read_data(mypath):
     words = data.split()
     word_count=counts(data.split())
     # print(spam_words)
-    return words,word_count
+    return prior,words,word_count
 
     # print(spam)
 
